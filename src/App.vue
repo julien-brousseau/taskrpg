@@ -1,5 +1,5 @@
 <template>
   <div>
-    BLOP
+    <h1>BLOP</h1>
   </div>
 </template>
