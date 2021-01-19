@@ -1,28 +1,17 @@
 <template>
   <div>
-
     <Header></Header>
-
     <div class="ui main text container">
       <h1>Task list</h1>
 
       <!-- Loading screen -->
-      <div v-if="!tasksLoadingComplete">
-        <div class="ui active dimmer">
-          <div class="ui loader" style="margin-top:-40px"></div>
-          <p style="color: white;">Loading tasks...</p>
-        </div>
-      </div>
+      <Loader v-if="!tasksLoadingComplete" />
 
       <!-- New task form -->
-      <div v-else-if="addingTask">
-        FORM
-      </div>
+      <Form v-else-if="addingTask" />
 
       <!-- Task list -->
-      <div v-else>
-        LIST
-      </div>
+      <List v-else />
 
     </div>
   </div>
@@ -31,9 +20,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import Header from './components/Header'
+import Loader from './components/Loader'
+import Form from './components/Form'
+import List from './components/List'
 
 export default {
-  components: { Header },
+  components: { Header, Loader, Form, List },
   computed: { ...mapGetters(['tasksLoadingComplete', 'addingTask']) },  
   created () {
     // this.$store.dispatch('initUser')
