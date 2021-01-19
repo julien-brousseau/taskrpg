@@ -43,5 +43,13 @@ export default new Vuex.Store({
     'TOGGLE_ADDING_TASK' (state) {
       state.addingTask = !state.addingTask
     }
-  }
+  },
+  getters: {
+    tasks: state => {
+      const list = (state.showCompleted) ? state.taskList : state.taskList.filter(t => !t.completed)
+      return list
+        .sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)
+        .sort((a, b) => a.completed > b.completed ? 1 : -1)
+    },
+    user: state => state.user,
 })
