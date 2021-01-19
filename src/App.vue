@@ -33,3 +33,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.container {
+  margin-top: 75px;
+}
+.grid {
+  padding: 40px 0px;
+}
+</style>

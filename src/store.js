@@ -6,9 +6,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     taskList: null,
-    user: {},
+    user: { name: 'Blop', level: 1, xp: 10 },
     showCompleted: false,
-    addingTask: false
+    addingTask: false,
+    showFloatingXp: false
   },
   mutations: {
     'INIT_USER' (state, user) {
@@ -53,7 +54,13 @@ export default new Vuex.Store({
           }
         })
         .catch(e => console.log(e))
-    }
+    },
+    toggleShowCompleted ({ commit }) {
+      commit('TOGGLE_SHOW_COMPLETED')
+    },
+    toggleAddingTask ({ commit }) {
+      commit('TOGGLE_ADDING_TASK')
+    },
   },
   getters: {
     tasks: state => {
@@ -65,5 +72,8 @@ export default new Vuex.Store({
     user: state => state.user,
     tasksLoadingComplete: state => state.taskList !== null,
     addingTask: state => state.addingTask,
+    showCompleted: state => state.showCompleted,
+    xpForNextLevel: state => state.user.level * 300,
+    showFloatingXp: state => state.showFloatingXp,
   }
 })
