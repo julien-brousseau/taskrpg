@@ -1,6 +1,8 @@
 <template>
   <div>
+
     <Header></Header>
+
     <div class="ui main text container">
       <h1>Task list</h1>
 
@@ -32,6 +34,10 @@ import Header from './components/Header'
 
 export default {
   components: { Header },
-  computed: { ...mapGetters(['tasksLoadingComplete', 'addingTask']) }
+  computed: { ...mapGetters(['tasksLoadingComplete', 'addingTask']) },  
+  created () {
+    // this.$store.dispatch('initUser')
+    this.$store.dispatch('loadTasks')
+  }
 }
 </script>

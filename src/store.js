@@ -5,9 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    taskList: [],
+    taskList: null,
     user: {},
-    tasksLoadingComplete: false,
     showCompleted: false,
     addingTask: false
   },
@@ -15,7 +14,6 @@ export default new Vuex.Store({
     'INIT_USER' (state, user) {
       state.user = user
     },
-
     'LOAD_TASKS' (state, tasks) {
       state.taskList = tasks
     },
@@ -29,19 +27,32 @@ export default new Vuex.Store({
     'CLEAR_TASKS' (state) {
       state.taskList = []
     },
-
     'ADD_XP' (state, xp) {
       state.user.xp += xp
-    },
-
-    'TOGGLE_TASKS_LOADED' (state) {
-      state.tasksLoadingComplete = !state.tasksLoadingComplete
     },
     'TOGGLE_SHOW_COMPLETED' (state) {
       state.showCompleted = !state.showCompleted
     },
     'TOGGLE_ADDING_TASK' (state) {
       state.addingTask = !state.addingTask
+    }
+  },
+  actions: {
+    addTask: ({ commit }, task) => {
+      Vue.http.post('tasks', task)
+        .then(res => commit('ADD_TASK', res.body))
+        .catch(e => console.log('Error:', e))
+    },
+    loadTasks: ({ commit }) => {
+      Vue.http.get('tasks')
+        .then(res => res.body)
+        .then(data => {
+          if (data) {
+            const tasks = Object.keys(data).map(id => ({ ...data[id], id }))
+            commit('LOAD_TASKS', tasks)
+          }
+        })
+        .catch(e => console.log(e))
     }
   },
   getters: {
@@ -52,7 +63,7 @@ export default new Vuex.Store({
         .sort((a, b) => a.completed > b.completed ? 1 : -1)
     },
     user: state => state.user,
-    tasksLoadingComplete: state => state.tasksLoadingComplete,
+    tasksLoadingComplete: state => state.taskList !== null,
     addingTask: state => state.addingTask,
   }
 })
