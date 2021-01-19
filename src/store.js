@@ -52,4 +52,7 @@ export default new Vuex.Store({
         .sort((a, b) => a.completed > b.completed ? 1 : -1)
     },
     user: state => state.user,
+    tasksLoadingComplete: state => state.tasksLoadingComplete,
+    addingTask: state => state.addingTask,
+  }
 })
