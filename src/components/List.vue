@@ -1,16 +1,22 @@
 <template>
   <div class="ui grid">
-
     <!-- Form field - Show Completed Tasks -->
     <div class="eight wide column">
       <div class="ui toggle checkbox">
-        <input type="checkbox" v-model="showCompleted" /><label>Show completed tasks</label>
+        <input type="checkbox" v-model="showCompleted" /><label
+          >Show completed tasks</label
+        >
       </div>
     </div>
 
     <!-- Form button - New Task -->
     <div class="eight wide column">
-      <button @click="toggleAddingTask" class="ui primary large button right floated">Create a new task</button>
+      <button
+        @click="toggleAddingTask"
+        class="ui primary large button right floated"
+      >
+        Create a new task
+      </button>
     </div>
 
     <!-- Task list -->
@@ -19,30 +25,40 @@
         <div class="item">Your task list is empty</div>
       </div>
       <div v-else class="ui list raised segment">
-        <Task v-for="task in tasks" :key="task.id" :task="task" />
+        <Task
+          v-for="task in tasks"
+          :key="task.id"
+          :task="task"
+          @click.native="task.xp ? completeTask(task) : ''"
+        />
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import Task from './Task'
+import { mapActions } from 'vuex';
+import Task from './Task';
 
 export default {
   components: { Task },
   computed: {
-    tasks () { return this.$store.getters.tasks },
+    tasks () {
+      return this.$store.getters.tasks;
+    },
     showCompleted: {
-      get () { return this.$store.getters.showCompleted },
-      set () { this.$store.dispatch('toggleShowCompleted') }
+      get () {
+        return this.$store.getters.showCompleted;
+      },
+      set () {
+        this.$store.dispatch('toggleShowCompleted');
+      }
     }
   },
   methods: {
     ...mapActions(['completeTask', 'toggleAddingTask'])
   }
-}
+};
 </script>
 
 <style scoped>
@@ -52,5 +68,4 @@ export default {
 .segment {
   padding: 0px !important;
 }
-
 </style>

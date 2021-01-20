@@ -1,21 +1,19 @@
 <template>
   <transition name="pop">
-
     <div v-if="showFloatingXp" class="xp">
       <h3>+ {{ showFloatingXp }} xp</h3>
     </div>
-    
   </transition>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   computed: {
     ...mapGetters(['showFloatingXp'])
   }
-}
+};
 </script>
 
 <style scoped>
@@ -23,7 +21,7 @@ export default {
   margin-top: 22px;
 }
 h3 {
-  color:green;
+  color: green;
   margin-right: 20px;
   font-size: 18px;
 }
@@ -42,7 +40,7 @@ h3 {
   }
   to {
     transform: translateY(0);
-    opacity: 1
+    opacity: 1;
   }
 }
 @keyframes slide-out {
@@ -52,7 +50,7 @@ h3 {
   }
   to {
     transform: translateY(-15px);
-    opacity: 0
+    opacity: 0;
   }
 }
 </style>
