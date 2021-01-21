@@ -2,6 +2,12 @@
   <div class="ui fixed inverted segment">
     <div class="ui container text">
       <div class="item">
+        <button @click="resetUser()" class="ui basic green button">
+          Create new user
+        </button>
+      </div>
+
+      <div class="item">
         <label>CHARACTER NAME</label>
         {{ user.name }}
       </div>
@@ -9,11 +15,6 @@
       <div class="item">
         <label>LEVEL</label>
         {{ user.level }}
-      </div>
-
-      <div class="item">
-        <button @click="clearTasks" class="ui red button">CLEAR</button>
-        <button @click="initUser(true)" class="ui teal button">NEW USER</button>
       </div>
 
       <div class="item rgt">
@@ -39,7 +40,7 @@ export default {
     ...mapGetters(['user', 'xpForNextLevel', 'showFloatingXp'])
   },
   methods: {
-    ...mapActions(['clearTasks', 'initUser'])
+    ...mapActions(['clearTasks', 'resetUser'])
   }
 };
 </script>
@@ -63,5 +64,8 @@ label {
   float: right;
   text-align: right;
   padding-right: 0px;
+}
+.button {
+  margin-top: 15px;
 }
 </style>

@@ -27,8 +27,8 @@ export default {
   components: { Header, Loader, Form, List },
   computed: { ...mapGetters(['tasksLoadingComplete', 'addingTask']) },
   created () {
-    this.$store.dispatch('initUser');
-    this.$store.dispatch('loadTasks');
+    // Get user and task data
+    this.$store.dispatch('fetchUser');
   }
 };
 </script>

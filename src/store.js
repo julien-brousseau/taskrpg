@@ -25,9 +25,6 @@ export default new Vuex.Store({
     'COMPLETE_TASK' (state, task) {
       state.taskList = state.taskList.map(t => (t._id === task._id) ? task : t);
     },
-    'CLEAR_TASKS' (state) {
-      state.taskList = [];
-    },
     'ADD_XP' (state, xp) {
       state.user.xp += xp;
     },
@@ -39,11 +36,25 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    initUser ({ commit }, reset = false) {
-      Vue.http.post('users', { reset })
-        .then(res => commit('INIT_USER', res.body))
+    // Get single user data and load its tasks
+    fetchUser ({ commit, dispatch }) {
+      Vue.http.get('users')
+        .then(res => {
+          commit('INIT_USER', res.body);
+          dispatch('loadTasks');
+        })
         .catch(e => console.log('Error: Cannot init user > ', e));
     },
+    // Delete all users and tasks, then create a new random user
+    resetUser ({ commit }) {
+      Vue.http.post('users')
+        .then(res => {
+          commit('INIT_USER', res.body);
+          commit('LOAD_TASKS', []);
+        })
+        .catch(e => console.log('Error: Cannot init user > ', e));
+    },
+    // Mark a task as completed, then manage xp gained and levelup
     completeTask: async ({ state, commit, getters }, task) => {
       // Skip if the task is invalid or already completed
       if (!task || task.completed) return null;
@@ -68,16 +79,13 @@ export default new Vuex.Store({
         })
         .catch(e => console.log('Error: Cannot complete task > ', e));
     },
+    // Create a new task for the user
     addTask: ({ commit }, task) => {
       Vue.http.post('tasks', task)
         .then(res => commit('ADD_TASK', res.body))
         .catch(e => console.log('Error: Cannot add task > ', e));
     },
-    clearTasks: ({ commit }) => {
-      Vue.http.delete('tasks')
-        .then(() => commit('CLEAR_TASKS'))
-        .catch(e => console.log('Error: Cannot delete tasks > ', e));
-    },
+    // Load all tasks for the current user
     loadTasks: ({ commit }) => {
       Vue.http.get('tasks')
         .then(res => res.body)
@@ -89,9 +97,11 @@ export default new Vuex.Store({
         })
         .catch(e => console.log('Error: Cannot load tasks > ', e));
     },
+    // Show/hide completed tasks
     toggleShowCompleted ({ commit }) {
       commit('TOGGLE_SHOW_COMPLETED');
     },
+    // Show/hide form
     toggleAddingTask ({ commit }) {
       commit('TOGGLE_ADDING_TASK');
     }
